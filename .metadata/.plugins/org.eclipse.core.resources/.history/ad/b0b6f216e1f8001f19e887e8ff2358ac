@@ -1,0 +1,70 @@
+package classpro;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Login {
+	private static final String url="jdbc:oracle:thin:@localhost:1521:xe";
+	private static final String username="system";
+	private static final String password="admin";
+	
+	private Connection getConnection() throws ClassNotFoundException,SQLException{
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		
+		return DriverManager.getConnection(url,username,password);
+	
+		
+	}
+
+	
+	public int userRegister(Admin adminstdmd1) throws SQLException,ClassNotFoundException {
+		
+		String insrt_query="insert into studData (id,name,username,password,email,Role) values(?,?,?,?,?,?)";
+		
+		int data=0;
+		try(Connection connection=getConnection();
+			PreparedStatement preparedstatement = connection.prepareStatement(insrt_query)){
+			
+			//preparedstatement.setString(1,adminstdmd1.getId());
+			preparedstatement.setString(1,adminstdmd1.getName());
+			preparedstatement.setString(2,adminstdmd1.getUsername());
+			preparedstatement.setString(3,adminstdmd1.getPassword());
+			preparedstatement.setString(4,adminstdmd1.getEmail());
+			preparedstatement.setString(5,adminstdmd1.getRole());
+
+			data=preparedstatement.executeUpdate();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+	public String uValidate(String username,String password) throws ClassNotFoundException,SQLException {
+    
+		String role=null;
+		String Login_query=" select role from studData where username=? and password=?";
+		
+		try(Connection connection=getConnection();
+			PreparedStatement preparedStatement=connection.prepareStatement(Login_query)){
+			 
+			preparedStatement.setString(1,username);
+			preparedStatement.setString(2,password);
+			
+			ResultSet rs=preparedStatement.executeQuery();
+            if(rs.next()) {
+            	role=rs.getString("role");
+            }
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return role;
+		
+	}
+
+}

@@ -1,0 +1,19 @@
+package httpservlet;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Cookie extends HttpServlet
+{
+
+	protected void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException ,IOException
+	{
+		Cookie ck = new ck("username","snehal");
+		
+		ck.setMaxAge(60*60*24);
+	}
+}

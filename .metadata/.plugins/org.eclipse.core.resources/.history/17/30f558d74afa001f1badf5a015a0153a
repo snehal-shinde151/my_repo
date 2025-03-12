@@ -1,0 +1,49 @@
+package MvsServ;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DbDemo {
+	private static final String url="jdbc:oracle:thin:@localhost:1521:xe";
+	private static final String username="system";
+	private static final String password="admin";
+	
+	private Connection getConnection() throws ClassNotFoundException, SQLException{
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		return DriverManager.getConnection(url,username,password);
+
+	}
+public List<Employee> getAllStudents() throws ClassNotFoundException, SQLException {
+    	
+    	
+    	
+        ArrayList<Employee> emp = new ArrayList<>();
+        String FETCH_STUDENTS_SQL = "SELECT * from empl1";
+
+        Connection connection = getConnection();
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FETCH_STUDENTS_SQL);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            while (rs.next()) {
+            	Employee e = new Employee();
+                e.setId(rs.getInt("id"));
+                e.setFname(rs.getString("Fname"));
+                e.setSalary(rs.getInt("salary"));
+                e.setDept_id(rs.getInt("Dept_id"));
+
+           
+                emp.add(e);
+            }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return emp;
+    }
+}

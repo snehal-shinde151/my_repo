@@ -1,0 +1,104 @@
+package classpro;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class Servlet extends HttpServlet {
+	
+	private Login login;
+	
+	public void init() {
+		login=new Login();
+	}
+	
+	protected void service(HttpServletRequest req,HttpServletResponse res) throws IOException, ServletException {
+		String str=req.getParameter("str");
+		
+		if("register" .equals(str)) {
+			userRegister(req,res);
+			}
+		else if("login".equals(str)) {
+			uValidate(req,res);
+		}else {
+			res.sendRedirect("error.html");
+		}
+	}
+	
+	
+
+	private void userRegister(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+int uid=0;
+		
+		String name=req.getParameter("name");
+		String username=req.getParameter("username");
+		String password=req.getParameter("password");
+		String email=req.getParameter("email");
+		String role=req.getParameter("role");
+        
+		Admin st=new Admin();
+		
+		st.setName(name);
+		st.setUsername(username);
+		st.setPassword(password);
+		st.setEmail(email);
+		st.setRole(role);
+		
+		try {
+			uid = login.userRegister(st);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(uid > 0) {
+			 req.setAttribute("name", st.getName());
+			 req.setAttribute("username", st.getUsername());
+			 req.setAttribute("password", st.getPassword());
+			 req.setAttribute("email", st.getEmail());
+			 req.setAttribute("role", st.getRole());
+
+			 RequestDispatcher rd = req.getRequestDispatcher("Login.html");
+			 rd.forward(req, res);
+			
+		}else {
+			 RequestDispatcher rd = req.getRequestDispatcher("Registration.html");
+			 rd.forward(req, res);
+
+		}
+	}
+	
+	private void uValidate(HttpServletRequest req, HttpServletResponse res) throws ServletException,IOException {
+		// TODO Auto-generated method stub
+		String username=req.getParameter("username");
+		String password=req.getParameter("password");
+ 
+		try {
+			  String role=login.uValidate(username,password);
+			  
+			  if(role!= null) {
+				  HttpSession hs=req.getSession();
+				  hs.setAttribute("username",username);
+				  hs.setAttribute("role",role);
+					
+					  if("ADMIN".equals(role)) {
+						  List<Admin> students = login.getAllStudents();
+						  req.setAttribute("student", students);
+						  req.getRequestDispatcher("welcome.html").forward(req, res);
+					  }else if("STUDENT".equals(role)) {
+						  res.sendRedirect("welcome.html");
+					  }
+				  }else {
+					  res.sendRedirect("error.html");
+				  }
+			  }catch(Exception e) {
+				  e.printStackTrace();
+			  }
+		}
+	}

@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+ <%
+String Req=request.getParameter("xyz");
+out.print(Req);
+%>
+
+
+<%
+String Age=request.getParameter("A");
+int abc=Integer.parseInt(Age);
+
+  if(abc>18){
+	 out.println("hello");
+  }
+  else{
+	  out.println("hii");
+  }
+%> 
+</body>
+</html>

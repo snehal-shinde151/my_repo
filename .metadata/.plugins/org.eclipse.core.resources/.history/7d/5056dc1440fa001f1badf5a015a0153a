@@ -1,0 +1,10 @@
+package MvsServ;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+
+@WebServlet("/hello");
+public class Servlet1 extends HttpServlet {
+	public void doGet(HttpServletRequest req,HttpServletRes)
+
+}

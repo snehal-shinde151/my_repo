@@ -1,0 +1,24 @@
+package httpservlet;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/set-cookie")
+public class Cookie extends HttpServlet
+{
+
+
+public void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException ,IOException
+	{
+		Cookie ck = new Cookie("username","snehal");
+		
+	   ck.setMaxAge(60*60*24);
+		res.addCookie(ck);
+		res.getWriter().println("Cookie has been set");
+	}
+}
