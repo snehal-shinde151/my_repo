@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <!-- Define a simple bean for a service class -->
+   
+
+    <!-- Define another bean for a repository class -->
+    
+
+    <!-- Define a bean for the database connection -->
+   
+<bean id="add" class="mnop.Address">
+<property name="a" value="5"></property>
+<property name="address" value="pune"></property>
+<property name="b" value="15"></property>
+
+</bean>
+
+<bean id="pqrs" class="mnop.Debitcard"/>
+
+<bean id="strp" scope="prototype" class="mnop.Creditcard">
+<property name="add" ref="add"></property>
+</bean>
+
+</beans>
